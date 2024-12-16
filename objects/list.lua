@@ -18,7 +18,7 @@ end
 ---@param v any
 function List:append(v)
     -- lua is one indexed
-    self.data[self.__len+1] = v
+    self.data[self.__len + 1] = v
     self.__len = self.__len + 1
 end
 
@@ -43,7 +43,8 @@ function List:remove(index)
     if index > self.__len then
         error("index out of bounds - List:remove")
     end
-    for i = index+1, self.__len do
+    
+    for i = index + 1, self.__len do
         self.data[i-1] = self.data[i]
     end
 
@@ -57,6 +58,16 @@ function List:print_list()
     print('len:', self.__len)
     for i = 1, self.__len do
         print(self.data[i])
+    end
+end
+
+---Clears the list from all elements
+---
+---O(N) operation
+function List:clear()
+    while self.__len > 0 do
+        table.remove(self.data, self.__len)
+        self.__len = self.__len - 1
     end
 end
 
