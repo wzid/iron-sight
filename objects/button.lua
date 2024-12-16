@@ -1,5 +1,6 @@
 ---@class Button
 Button = {x = 0, y = 0, scale = 0, width = 0, height = 0}
+Button.__index = Button
 
 -- todo: add lambda functionality for an action when the button is pressed
 -- not sure how to do that in lua rn
@@ -10,13 +11,9 @@ Button = {x = 0, y = 0, scale = 0, width = 0, height = 0}
 ---@param scale number
 ---@return Button
 function Button:new(x, y, scale)
-    local button = {}
+    local button = {x = x, y = y, scale = scale}
     setmetatable(button, self)
-    self.__index = self
 
-    button.x = x
-    button.y = y
-    button.scale = scale
     button.width = Images.button:getWidth() * scale
     button.height = Images.button:getHeight() * scale
     return button

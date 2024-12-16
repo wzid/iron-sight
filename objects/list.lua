@@ -1,77 +1,84 @@
 ---@class List
-List = {__len = 0, data = {}}
+List = {data = {}}
+List.__index = List
 
 ---Creates a new instance of the List class and returns it
 ---@return List
 function List:new()
-    local list = {}
+    local list = {data = {}}
     setmetatable(list, self)
-    self.__index = self
-
-    list.__len = 0
-    list.data = {}
-
     return list
 end
 
 ---Appends a value to the end of the list
----@param v any
-function List:append(v)
-    -- lua is one indexed
-    self.data[self.__len + 1] = v
-    self.__len = self.__len + 1
+---@param value any
+function List:append(value)
+    table.insert(self.data, value)
 end
 
+---Insert an item at a specific index
+---@param i number
+---@param value any
+function List:insert(i, value)
+    if i < 1 or i > #self.data + 1 then
+        error("Index out of bounds")
+    end
+    table.insert(self.data, i, value)
+end
 
 ---Returns the value at index i
 ---@param i number
 ---@return any
 function List:get(i)
-    if i > self.__len or i < 1 then
-        error("index out of bounds - List:get")
+    if i < 1 or i > #self.data then
+        error("Index out of bounds")
     end
     return self.data[i]
 end
 
--- 
-
 ---Removes an element a specified index
----
----O(n) operation because we have to move everything down the list
----@param index number
-function List:remove(index)
-    if index > self.__len then
-        error("index out of bounds - List:remove")
+---@param i number
+function List:remove(i)
+    if i < 1 or i > #self.data then
+        error("Index out of bounds")
     end
-    
-    for i = index + 1, self.__len do
-        self.data[i-1] = self.data[i]
-    end
-
-    -- remove the last element
-    table.remove(self.data, self.__len)
-    self.__len = self.__len - 1
+    return table.remove(self.data, i)
 end
 
----Prints the length of the list along with every elemtn
-function List:print_list()
-    print('len:', self.__len)
-    for i = 1, self.__len do
-        print(self.data[i])
+---Set an item at a specific index
+---@param i number
+---@param value any
+function List:set(i, value)
+    if i < 1 or i > #self.data then
+        error("Index out of bounds")
     end
+    self.data[i] = value
 end
 
 ---Clears the list from all elements
----
----O(N) operation
 function List:clear()
-    while self.__len > 0 do
-        table.remove(self.data, self.__len)
-        self.__len = self.__len - 1
-    end
+    self.data = {}
 end
 
 ---@return integer length
 function List:len()
-    return self.__len
+    return #self.data
+end
+
+---Check if the list is empty
+---@return boolean
+function List:is_empty()
+    return #self.data == 0
+end
+
+---Returns an iterator for the list
+---@return function
+function List:iterate()
+    local i = 0
+    return function()
+        i = i + 1
+        if i <= #self.data then
+            return i, self.data[i]
+        end
+    end
 end
