@@ -22,7 +22,7 @@ function love.load()
 
     Images.cowboy = love.graphics.newImage("resources/textures/cowboy.png")
     Images.cowboy:setFilter("nearest", "nearest")
-    Arm = { x = 125, y = Height - 170, angle = 0}
+    Arm = { x = 125, y = Height - 170, angle = 0, dx = 0, dy = 0}
 
     Images.arm = love.graphics.newImage("resources/textures/arm.png")
     Images.arm:setFilter("nearest", "nearest")
@@ -41,9 +41,10 @@ function love.load()
 
 
     BG_Music = love.audio.newSource("resources/sounds/desert-snake.wav", "stream")
-    BG_Music:setVolume(0.6)
+    BG_Music:setVolume(0.5)
 end
 
+local to_remove = List:new()
 function love.draw()
     love.graphics.printf("Iron Sight", Fonts.bold, 0, 100, Width, "center")
 
@@ -65,8 +66,6 @@ function love.draw()
 
     if Bullets:len() > 0 then
         -- todo: look how to make it so i dont have to do bullets.data
-        local to_remove = List:new()
-
         for i, bullet in ipairs(Bullets.data) do
             love.graphics.setColor(Color:new(193, 108, 91):unpack())
             love.graphics.rectangle("fill", bullet.x, bullet.y, 10, 5)
@@ -84,8 +83,11 @@ function love.draw()
             end
         end
 
-        for _, index in ipairs(to_remove.data) do
-            Bullets:remove(index)
+        if to_remove:len() > 0 then
+            for _, index in ipairs(to_remove.data) do
+                Bullets:remove(index)
+            end
+            to_remove:clear()
         end
     end
 
@@ -95,10 +97,12 @@ end
 function love.update()
     local mx, my = love.mouse.getPosition()
     local dx, dy = mx - Arm.x, my - Arm.y
-    Arm.angle = math.max(-1.6, math.min(1.6, math.atan2(dy, dx)))
-    if not BG_Music:isPlaying( ) then
+    Arm.angle = math.max(-1.57075, math.min(1.57075, math.atan2(dy, dx)))
+
+    if not BG_Music:isPlaying() then
 		love.audio.play(BG_Music)
 	end
+    
 end
 
 
@@ -106,13 +110,13 @@ function love.mousepressed(mx, my, btn, touch)
     if btn == 1 then
         local bullet_speed = 7
         local dx, dy = mx - Arm.x, my - Arm.y
-        local shot_angle = math.max(-1.6, math.min(1.6, math.atan2(dy, dx)))
+        local shot_angle = math.max(-1.57075, math.min(1.57075, math.atan2(dy, dx)))
+        local angle = shot_angle - .19
 
-        -- could be improved, ask jake
-        local distance_to_gun = 70
+        local distance_to_gun = 78
         -- todo: add sounds later
-        local bullet_x = Arm.x + (distance_to_gun * math.cos(shot_angle))
-        local bullet_y = Arm.y + (distance_to_gun * math.sin(shot_angle))
+        local bullet_x = (Arm.x + 4) + (distance_to_gun * math.cos(angle))
+        local bullet_y = (Arm.y + 23) + (distance_to_gun * math.sin(angle))
         Bullets:append({x = bullet_x, y = bullet_y, angle = shot_angle, speed = bullet_speed})
 	end
 end
