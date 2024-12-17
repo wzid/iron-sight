@@ -1,4 +1,4 @@
-require 'libs.slam'
+require 'libs.sound'
 require 'objects.list'
 require 'objects.color'
 require 'objects.button'
@@ -73,8 +73,6 @@ function love.draw()
 
 end
 
-local pressed = false
-
 function love.update()
     local mx, my = love.mouse.getPosition()
     local dx, dy = mx - Arm.x, my - Arm.y
@@ -89,13 +87,13 @@ end
 
 function love.mousepressed(mx, my, btn, touch)
     if btn == 1 then
-        local bullet_speed = 7
+        local bullet_speed = 15
         local dx, dy = mx - Arm.x, my - Arm.y
         local shot_angle = math.max(-1.57075, math.min(1.57075, math.atan2(dy, dx)))
         local angle = shot_angle - .19
 
         local distance_to_gun = 78
-        Music.shoot:play()
+        love.audio.play(Music.shoot)
         -- todo: add sounds later
         local bullet_x = (Arm.x + 4) + (distance_to_gun * math.cos(angle))
         local bullet_y = (Arm.y + 23) + (distance_to_gun * math.sin(angle))
