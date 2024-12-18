@@ -1,5 +1,5 @@
 ---@class Color rgb color class for converting values to float values
-Color = {r = 0, g = 0, b = 0, a = 255}
+Color = { r = 0, g = 0, b = 0, a = 255 }
 Color.__index = Color
 
 --- Creates a new instance of the Color class and returns it

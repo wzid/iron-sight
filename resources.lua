@@ -3,13 +3,16 @@ Images = {}
 Music = {}
 
 function Load_Resources()
-    Images.arm = love.graphics.newImage("resources/textures/arm.png")
-    Images.cowboy = love.graphics.newImage("resources/textures/cowboy.png")
-    Images.button = love.graphics.newImage("resources/textures/button.png")
+    local tex = "resources/textures/"
+    Images.arm = love.graphics.newImage(tex .. "arm.png")
+    Images.cowboy = love.graphics.newImage(tex .."cowboy.png")
+    Images.button = love.graphics.newImage(tex .. "button.png")
+    Images.bird = love.graphics.newImage(tex .. "bird.png")
 
     for _, image in pairs(Images) do image:setFilter("nearest", "nearest") end
 
-    Fonts.regular = love.graphics.newFont("resources/fonts/pixel-times.ttf", 38)
+    Fonts.regular = love.graphics.newFont("resources/fonts/pixel-times.ttf", 28)
+    Fonts.regular_lg = love.graphics.newFont("resources/fonts/pixel-times.ttf", 38)
     Fonts.bold = love.graphics.newFont("resources/fonts/pixel-times-bold.ttf", 55)
 
     for _, font in pairs(Fonts) do font:setFilter("nearest", "nearest") end

@@ -1,11 +1,11 @@
 ---@class List
-List = {data = {}}
+List = { data = {} }
 List.__index = List
 
 ---Creates a new instance of the List class and returns it
 ---@return List
 function List:new()
-    local list = {data = {}}
+    local list = { data = {} }
     setmetatable(list, self)
     return list
 end
