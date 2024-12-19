@@ -12,7 +12,7 @@ Game = {
     arm = { x = 0, y = 0, angle = 0 },
     birds = List:new(),
     remove_birds = List:new(),
-    birds_shot = 0,
+    score = 0,
     show_bird_time = love.timer.getTime(),
 }
 Game.__index = Game
@@ -21,7 +21,7 @@ local bird_grid
 
 function Game.load()
     Game.arm = { x = 125, y = Height - 170, angle = 0 }
-    bird_grid = anim8.newGrid(32, 32, Images.bird:getWidth(), Images.bird:getHeight())
+    bird_grid = anim8.newGrid(25, 24, Images.bird:getWidth(), Images.bird:getHeight())
 end
 
 
@@ -46,7 +46,7 @@ function Game.draw()
     -- actual game
     if not Game.focused then return end
 
-    love.graphics.print("Birds Shot: " .. Game.birds_shot, 10, 10)
+    love.graphics.print("Score: " .. Game.score, 10, 10)
 
     for _, bird in Game.birds:iterate() do
         bird.animate:draw(Images.bird, bird.x, bird.y, 0, 5, 5)
@@ -90,8 +90,9 @@ function Game.update(dt)
     if love.timer.getTime() > Game.show_bird_time then
         local bird_x = Width + 10
         local bird_y = math.random(Height / 2)
-        Game.birds:append({ x = bird_x, y = bird_y, speed = bird_speed, shot = false, animate = anim8.newAnimation(bird_grid('1-10', 1), 0.1) })
-        Game.show_bird_time = love.timer.getTime() + math.random(1, 3)
+        local bird_speed_addon = math.random(0, 200)
+        Game.birds:append({ x = bird_x, y = bird_y, speed = bird_speed + bird_speed_addon, shot = false, animate = anim8.newAnimation(bird_grid('1-10', 1), 0.1) })
+        Game.show_bird_time = love.timer.getTime() + math.random(0, 2)
     end
 
     for _, bird in Game.birds:iterate() do
@@ -112,10 +113,10 @@ function Game.update(dt)
 
         if Game.bullets:len() > 0 then
             for bullet_i, bullet in Game.bullets:iterate() do
-                if bullet.x < bird.x + 32 * 5 and bullet.x > bird.x and bullet.y < bird.y + 32 * 5 and bullet.y > bird.y then
+                if bullet.x < bird.x + 25 * 5 and bullet.x > bird.x and bullet.y < bird.y + 24 * 5 and bullet.y > bird.y then
                     bird.animate = anim8.newAnimation(bird_grid('11-13', 1), .1, "pauseAtEnd")
                     bird.shot = true
-                    Game.birds_shot = Game.birds_shot + 1
+                    Game.score = Game.score + 1
                     Game.remove_bullets:append(bullet_i)
                 end
             end

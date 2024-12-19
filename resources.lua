@@ -7,7 +7,8 @@ function Load_Resources()
     Images.arm = love.graphics.newImage(tex .. "arm.png")
     Images.cowboy = love.graphics.newImage(tex .."cowboy.png")
     Images.button = love.graphics.newImage(tex .. "button.png")
-    Images.bird = love.graphics.newImage(tex .. "bird.png")
+    Images.bird = love.graphics.newImage(tex .. "birds.png")
+    Images.cursor = love.graphics.newImage(tex .. "cursor.png")
 
     for _, image in pairs(Images) do image:setFilter("nearest", "nearest") end
 

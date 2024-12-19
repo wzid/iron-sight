@@ -7,6 +7,8 @@ require 'objects.button'
 require 'resources'
 
 function love.load()
+    love.mouse.setVisible(false)
+
     math.randomseed(os.time())
     -- anim8 = require 'libs.anim8'
     love.window.setTitle("Iron Sight")
@@ -22,6 +24,9 @@ end
 
 function love.draw()
     -- only draws the main menu if it is focused
+    love.graphics.draw(Images.cursor, love.mouse.getX() - Images.cursor:getWidth() / 2, 
+        love.mouse.getY() - Images.cursor:getHeight() / 2)
+
     MainMenu.draw()
     Game.draw()
 end
